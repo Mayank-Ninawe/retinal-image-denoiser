@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Upload, Download, Loader, Zap } from 'lucide-react';
-
+import { Upload, Download, Loader, Zap, Activity } from 'lucide-react';
+import './App.css';
 
 const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
@@ -14,10 +14,30 @@ function App() {
   const [showComparison, setShowComparison] = useState(false);
   const [imageStats, setImageStats] = useState(null);
   const [availableFilters, setAvailableFilters] = useState([]);
+  const [sliderPosition, setSliderPosition] = useState(50);
+  const [isAnimated, setIsAnimated] = useState(false);
 
   // Fetch available filters on mount
-  React.useEffect(() => {
+  useEffect(() => {
     fetchAvailableFilters();
+    setIsAnimated(true);
+  }, []);
+
+  // Particle background effect
+  useEffect(() => {
+    const createParticle = () => {
+      const particle = document.createElement('div');
+      particle.className = 'particle';
+      particle.style.left = Math.random() * 100 + '%';
+      particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+      particle.style.opacity = Math.random() * 0.5 + 0.2;
+      document.querySelector('.particle-container')?.appendChild(particle);
+      
+      setTimeout(() => particle.remove(), 5000);
+    };
+
+    const interval = setInterval(createParticle, 300);
+    return () => clearInterval(interval);
   }, []);
 
   const fetchAvailableFilters = async () => {
@@ -140,48 +160,108 @@ function App() {
     link.click();
   };
 
+  const getFilterColor = (filterName) => {
+    const colors = {
+      'median': 'cyan',
+      'adaptive': 'purple',
+      'bilateral': 'pink',
+      'morphological': 'yellow',
+      'wiener': 'green'
+    };
+    return colors[filterName] || 'cyan';
+  };
+
+  const getFilterBadgeClass = (filterName) => {
+    const classes = {
+      'median': 'filter-badge-cyan',
+      'adaptive': 'filter-badge-purple',
+      'bilateral': 'filter-badge-pink',
+      'morphological': 'filter-badge-yellow',
+      'wiener': 'filter-badge-green'
+    };
+    return classes[filterName] || 'filter-badge-cyan';
+  };
+
+  const handleButtonClick = (e, callback) => {
+    // Ripple effect
+    const button = e.currentTarget;
+    const ripple = document.createElement('span');
+    const rect = button.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    const x = e.clientX - rect.left - size / 2;
+    const y = e.clientY - rect.top - size / 2;
+    
+    ripple.style.width = ripple.style.height = size + 'px';
+    ripple.style.left = x + 'px';
+    ripple.style.top = y + 'px';
+    ripple.classList.add('ripple');
+    
+    button.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+    
+    if (callback) callback();
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-blue-100 to-blue-50 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Zap className="w-10 h-10 text-blue-600" />
-            <h1 className="text-4xl md:text-5xl font-bold text-blue-900">
+    <div className="app-container">
+      {/* Particle Background */}
+      <div className="particle-container"></div>
+      
+      <div className="content-wrapper">
+        {/* Animated Header */}
+        <div className={`header ${isAnimated ? 'fade-in' : ''}`}>
+          <div className="header-content">
+            <Activity className="header-icon pulse" />
+            <h1 className="gradient-text">
               Retinal Image Denoiser
             </h1>
-            <Zap className="w-10 h-10 text-blue-600" />
+            <Activity className="header-icon pulse" />
           </div>
-          <p className="text-blue-700 text-lg">
-            🔬 Remove salt-and-pepper noise using adaptive spatial filters
+          <div className="glow-line"></div>
+          <p className="header-subtitle">
+            🔬 Advanced Medical Imaging • Remove Salt-and-Pepper Noise • AI-Powered Spatial Filters
           </p>
         </div>
 
         {/* Main Container */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+        <div className={`main-grid ${isAnimated ? 'fade-in-delay' : ''}`}>
           {/* Upload Section */}
-          <div className="lg:col-span-1 bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-            <h2 className="text-2xl font-bold text-blue-900 mb-6">📤 Upload Image</h2>
-            <label className="flex flex-col items-center justify-center w-full p-8 border-2 border-dashed border-blue-400 rounded-lg cursor-pointer hover:bg-blue-50 transition">
-              <Upload className="w-12 h-12 text-blue-500 mb-2" />
-              <p className="text-blue-700 font-semibold">Click to upload</p>
-              <p className="text-blue-500 text-sm">PNG, JPG, JPEG</p>
+          <div className="glass-card upload-card hover-glow">
+            <h2 className="card-title">
+              <Upload className="title-icon" />
+              Upload Image
+            </h2>
+            <label className="upload-zone">
+              <Upload className="upload-icon" />
+              <p className="upload-text">Click to upload</p>
+              <p className="upload-subtext">PNG, JPG, JPEG</p>
               <input
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="hidden"
+                className="upload-input"
               />
             </label>
             {uploadedImage && (
-              <div className="mt-6">
-                <img src={uploadedImage} alt="Uploaded" className="w-full rounded-lg shadow" />
+              <div className="uploaded-preview">
+                <div className="image-wrapper zoom-hover">
+                  <img src={uploadedImage} alt="Uploaded" className="preview-image" />
+                </div>
                 {imageStats && (
-                  <div className="mt-4 p-4 bg-blue-50 rounded-lg text-sm">
-                    <p className="text-blue-900 font-semibold">Image Stats:</p>
-                    <p className="text-blue-700">Mean: {imageStats.mean.toFixed(2)}</p>
-                    <p className="text-blue-700">Std Dev: {imageStats.std.toFixed(2)}</p>
-                    <p className="text-blue-700">Blur Score: {imageStats.blur_score.toFixed(2)}</p>
+                  <div className="stats-panel">
+                    <p className="stats-title">📊 Image Statistics</p>
+                    <div className="stat-item">
+                      <span className="stat-label">Mean:</span>
+                      <span className="stat-value animated-counter">{imageStats.mean.toFixed(2)}</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">Std Dev:</span>
+                      <span className="stat-value animated-counter">{imageStats.std.toFixed(2)}</span>
+                    </div>
+                    <div className="stat-item">
+                      <span className="stat-label">Blur Score:</span>
+                      <span className="stat-value animated-counter">{imageStats.blur_score.toFixed(2)}</span>
+                    </div>
                   </div>
                 )}
               </div>
@@ -189,17 +269,20 @@ function App() {
           </div>
 
           {/* Controls Section */}
-          <div className="lg:col-span-2 bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition">
-            <h2 className="text-2xl font-bold text-blue-900 mb-6">⚙️ Denoise Settings</h2>
+          <div className="glass-card controls-card hover-glow">
+            <h2 className="card-title">
+              <Zap className="title-icon" />
+              Denoise Settings
+            </h2>
             
-            <div className="mb-6">
-              <label className="block text-blue-900 font-semibold mb-3">
+            <div className="control-group">
+              <label className="control-label">
                 Filter Type
               </label>
               <select
                 value={selectedFilter}
                 onChange={(e) => setSelectedFilter(e.target.value)}
-                className="w-full p-3 border-2 border-blue-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                className="select-input"
               >
                 {availableFilters.map(filter => (
                   <option key={filter.name} value={filter.name}>
@@ -207,15 +290,23 @@ function App() {
                   </option>
                 ))}
               </select>
-              <p className="text-blue-600 text-sm mt-2">
-                {availableFilters.find(f => f.name === selectedFilter)?.description}
-              </p>
+              <div className="filter-badges">
+                {availableFilters.map(filter => (
+                  <span 
+                    key={filter.name} 
+                    className={`filter-badge ${getFilterBadgeClass(filter.name)} ${selectedFilter === filter.name ? 'active' : ''}`}
+                    onClick={() => setSelectedFilter(filter.name)}
+                  >
+                    {filter.name}
+                  </span>
+                ))}
+              </div>
             </div>
 
             {['median', 'adaptive', 'morphological', 'wiener'].includes(selectedFilter) && (
-              <div className="mb-8">
-                <label className="block text-blue-900 font-semibold mb-3">
-                  Kernel Size: <span className="text-blue-600">{kernelSize}</span>
+              <div className="control-group">
+                <label className="control-label">
+                  Kernel Size: <span className="kernel-value">{kernelSize}</span>
                 </label>
                 <input
                   type="range"
@@ -224,97 +315,148 @@ function App() {
                   step="2"
                   value={kernelSize}
                   onChange={(e) => setKernelSize(parseInt(e.target.value))}
-                  className="w-full accent-blue-600"
+                  className="range-input"
                 />
-                <p className="text-blue-600 text-xs mt-2">Adjust for different noise levels</p>
+                <p className="control-hint">Adjust for different noise levels</p>
               </div>
             )}
 
-            <div className="flex flex-col gap-3">
+            <div className="button-group">
               <button
-                onClick={handleDenoise}
+                onClick={(e) => handleButtonClick(e, handleDenoise)}
                 disabled={loading || !uploadedImage}
-                className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="btn btn-primary"
               >
-                {loading && <Loader className="w-5 h-5 animate-spin" />}
+                {loading && <Loader className="btn-icon spin" />}
+                {!loading && <Zap className="btn-icon" />}
                 Apply Filter
               </button>
               <button
-                onClick={handleCompare}
+                onClick={(e) => handleButtonClick(e, handleCompare)}
                 disabled={loading || !uploadedImage}
-                className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn btn-secondary"
               >
+                <Activity className="btn-icon" />
                 Compare All Filters
               </button>
             </div>
           </div>
         </div>
 
-        {/* Results Section */}
+        {/* Results Section - Single Filter */}
         {Object.keys(denoisedImages).length > 0 && !showComparison && (
-          <div className="bg-white rounded-xl shadow-lg p-8 mb-8">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-blue-900">✅ Denoised Result</h2>
+          <div className="glass-card results-card hover-glow fade-in">
+            <div className="results-header">
+              <h2 className="card-title">
+                ✅ Denoised Result
+                <span className={`filter-badge ${getFilterBadgeClass(selectedFilter)}`}>
+                  {selectedFilter}
+                </span>
+              </h2>
               <button
-                onClick={() => downloadImage(Object.values(denoisedImages)[0], selectedFilter)}
-                className="flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition"
+                onClick={(e) => handleButtonClick(e, () => downloadImage(Object.values(denoisedImages)[0], selectedFilter))}
+                className="btn btn-success"
               >
-                <Download className="w-5 h-5" />
+                <Download className="btn-icon" />
                 Download
               </button>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <p className="text-blue-900 font-semibold mb-3 text-center">Original</p>
-                <img src={uploadedImage} alt="Original" className="w-full rounded-lg shadow" />
-              </div>
-              <div>
-                <p className="text-blue-900 font-semibold mb-3 text-center capitalize">
-                  {selectedFilter} Filtered
-                </p>
-                <img src={Object.values(denoisedImages)[0]} alt="Denoised" className="w-full rounded-lg shadow" />
+            
+            {/* Image Comparison Slider */}
+            <div className="comparison-container">
+              <div className="comparison-wrapper">
+                <div className="comparison-image-container">
+                  <img src={uploadedImage} alt="Original" className="comparison-image" />
+                  <div className="image-label original-label">Original</div>
+                </div>
+                <div 
+                  className="comparison-image-container denoised-container"
+                  style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
+                >
+                  <img src={Object.values(denoisedImages)[0]} alt="Denoised" className="comparison-image" />
+                  <div className="image-label denoised-label">{selectedFilter} Filtered</div>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={sliderPosition}
+                  onChange={(e) => setSliderPosition(e.target.value)}
+                  className="comparison-slider"
+                />
+                <div 
+                  className="slider-line"
+                  style={{ left: `${sliderPosition}%` }}
+                >
+                  <div className="slider-handle"></div>
+                </div>
               </div>
             </div>
           </div>
         )}
 
-        {/* Comparison Section */}
+        {/* Comparison Section - All Filters */}
         {showComparison && Object.keys(denoisedImages).length > 0 && (
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h2 className="text-2xl font-bold text-blue-900 mb-8 text-center">
+          <div className="glass-card comparison-grid-card fade-in">
+            <h2 className="card-title centered">
               🔍 Filter Comparison
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="comparison-grid">
               {/* Original */}
-              <div className="text-center">
-                <div className="bg-gray-50 p-2 rounded-lg mb-3">
-                  <img src={uploadedImage} alt="Original" className="w-full rounded h-48 object-cover" />
+              <div className="comparison-item">
+                <div className="comparison-image-wrapper zoom-hover">
+                  <img src={uploadedImage} alt="Original" className="grid-image" />
+                  <div className="image-overlay">
+                    <span className="overlay-text">Original</span>
+                  </div>
                 </div>
-                <p className="text-blue-900 font-bold">Original Image</p>
+                <p className="comparison-label">Original Image</p>
               </div>
 
               {/* All Filters */}
               {Object.entries(denoisedImages).map(([filterName, imgData]) => (
-                <div key={filterName} className="text-center">
-                  <div className="bg-blue-50 p-2 rounded-lg mb-3 hover:shadow-md transition">
-                    <img src={imgData} alt={filterName} className="w-full rounded h-48 object-cover" />
+                <div key={filterName} className="comparison-item">
+                  <div className="comparison-image-wrapper zoom-hover">
+                    <img src={imgData} alt={filterName} className="grid-image" />
+                    <div className="image-overlay">
+                      <span className="overlay-text">{filterName}</span>
+                    </div>
                   </div>
-                  <p className="text-blue-900 font-bold capitalize">{filterName}</p>
-                  <button
-                    onClick={() => downloadImage(imgData, filterName)}
-                    className="mt-2 text-sm text-blue-600 hover:text-blue-800 font-semibold"
-                  >
-                    ⬇ Download
-                  </button>
+                  <div className="comparison-footer">
+                    <span className={`filter-badge ${getFilterBadgeClass(filterName)}`}>
+                      {filterName}
+                    </span>
+                    <button
+                      onClick={(e) => handleButtonClick(e, () => downloadImage(imgData, filterName))}
+                      className="download-mini-btn"
+                    >
+                      <Download className="mini-icon" />
+                      Download
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
           </div>
         )}
 
+        {/* Loading Overlay */}
+        {loading && (
+          <div className="loading-overlay">
+            <div className="loading-spinner">
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+              <div className="spinner-ring"></div>
+            </div>
+            <p className="loading-text">Processing...</p>
+          </div>
+        )}
+
         {/* Footer */}
-        <div className="text-center mt-12 text-blue-600">
-          <p className="text-sm">🔬 Built for retinal image denoising | Powered by OpenCV & Scipy</p>
+        <div className="footer">
+          <p className="footer-text">
+            🔬 Built for retinal image denoising | Powered by OpenCV & Scipy | Premium Medical Imaging UI
+          </p>
         </div>
       </div>
     </div>
