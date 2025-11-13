@@ -2,7 +2,7 @@
 
 **Salt-and-Pepper Noise Removal in Retinal Fundus Images using Spatial Filters**
 
-🌐 **[Live Demo](https://retinal-image-denoiser-five.vercel.app/)** • 🚀 **[Backend API](https://retinal-image-denoiser-api.onrender.com)**
+🌐 **[Live Demo](https://retinal-image-denoiser.vercel.app/)** • 🚀 **[Backend API](https://retinal-image-denoiser-api.onrender.com)**
 
 **Quick Links:** [About](#-about) • [Features](#-features) • [Quick Start](#-quick-start) • [Filters](#-filters--algorithms) • [API Docs](#-api-documentation)
 
