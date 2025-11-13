@@ -1,33 +1,10 @@
-<div align="center">
-  <h1>🔬 Retinal Image Denoiser</h1>
-  <p><strong>Salt-and-Pepper Noise Removal in Retinal Fundus Images using Spatial Filters</strong></p>
-  
-  <p>
-    <a href="https://retinal-image-denoiser-five.vercel.app/">
-      <img src="https://img.shields.io/badge/🌐_Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Live Demo" />
-    </a>
-    <a href="https://retinal-image-denoiser-api.onrender.com">
-      <img src="https://img.shields.io/badge/🚀_API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=white" alt="Backend API" />
-    </a>
-  </p>
-  
-  <p>
-    <img src="https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python" />
-    <img src="https://img.shields.io/badge/React-18.0+-61DAFB?style=flat-square&logo=react&logoColor=white" alt="React" />
-    <img src="https://img.shields.io/badge/Flask-3.1.2-000000?style=flat-square&logo=flask&logoColor=white" alt="Flask" />
-    <img src="https://img.shields.io/badge/OpenCV-4.12-5C3EE8?style=flat-square&logo=opencv&logoColor=white" alt="OpenCV" />
-    <img src="https://img.shields.io/badge/License-MIT-green.svg?style=flat-square" alt="License" />
-  </p>
-  
-  <p>
-    <a href="#-about">About</a> - 
-    <a href="#-features">Features</a> - 
-    <a href="#-quick-start">Quick Start</a> - 
-    <a href="#-filters">Filters</a> - 
-    <a href="#-api-docs">API Docs</a>
-  </p>
-  
-</div>
+# 🔬 Retinal Image Denoiser
+
+**Salt-and-Pepper Noise Removal in Retinal Fundus Images using Spatial Filters**
+
+🌐 **[Live Demo](https://retinal-image-denoiser-five.vercel.app/)** • 🚀 **[Backend API](https://retinal-image-denoiser-api.onrender.com)**
+
+**Quick Links:** [About](#-about) • [Features](#-features) • [Quick Start](#-quick-start) • [Filters](#-filters--algorithms) • [API Docs](#-api-documentation)
 
 
 ***
@@ -81,21 +58,9 @@ Retinal images are essential for diagnosing eye diseases like **Diabetic Retinop
 
 ## 🛠️ Tech Stack
 
-<div align="center">
-
-**Frontend:** React -  Tailwind CSS -  Axios -  Vercel  
-**Backend:** Python -  Flask -  OpenCV -  NumPy -  SciPy -  Render  
+**Frontend:** React • Tailwind CSS • Axios • Vercel  
+**Backend:** Python • Flask • OpenCV • NumPy • SciPy • Render  
 **Dataset:** DRIVE (40 retinal fundus images, 565×584)
-
-<p>
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" />
-  <img src="https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white" />
-  <img src="https://img.shields.io/badge/Tailwind-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" />
-</p>
-
-</div>
 
 ***
 
@@ -311,27 +276,15 @@ Contributions welcome! 🎉
 
 ---
 
-## 📜 License
-
-**MIT License** © 2025 Mayank Ninawe
-
-Open source and free to use. See [LICENSE](LICENSE) for details.
-
----
-
 ## 📞 Connect
-
-<div align="center">
 
 **Mayank Ninawe**
 
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Mayank-Ninawe)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/mayank-ninawe)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:mayank.ninawe@example.com)
+- 🌐 GitHub: [@Mayank-Ninawe](https://github.com/Mayank-Ninawe)
+- 💼 LinkedIn: [www.linkedin.com/in/mayank-ninawe-b95151354](https://www.linkedin.com/in/mayank-ninawe-b95151354)
+- 📧 Email: mayakninawe22@gmail.com
 
 💬 Open to feedback, collaborations, and opportunities!
-
-</div>
 
 ---
 
@@ -344,20 +297,11 @@ Open source and free to use. See [LICENSE](LICENSE) for details.
 
 ---
 
-<div align="center">
-
-## ⭐ Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=Mayank-Ninawe/retinal-image-denoiser&type=Date)](https://star-history.com/#Mayank-Ninawe/retinal-image-denoiser&Date)
-
----
+<div align="center"
 
 **Made with ❤️ and OpenCV**
 
 *Transforming noisy medical images into diagnostic clarity*
-
-![GitHub Stars](https://img.shields.io/github/stars/Mayank-Ninawe/retinal-image-denoiser?style=social)
-![GitHub Forks](https://img.shields.io/github/forks/Mayank-Ninawe/retinal-image-denoiser?style=social)
 
 ⭐ **If this helped you, please star the repo!** ⭐
 
